@@ -21,8 +21,8 @@ app.get('*', (req, res) => {
 app.get('/api/notes', (req, res) => {
     fs.readFile('./db/db.json', (err, data) => {
         if (err) throw err
-        let dbData = JSON.parse(data)
-        res.json(dbData)
+        let noteHistoryData = JSON.parse(data)
+        res.json(noteHistoryData)
     });   
 });
 // `POST /api/notes` should receive a new note to save on the request body, add it to the `db.json` file, and then return the new note to the client.
