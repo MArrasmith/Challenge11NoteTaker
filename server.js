@@ -2,7 +2,7 @@ const express = require("express");
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const uuidv4 = require('uuid')
+const { v4: uuidv4 } = require('uuid')
 const PORT = process.env.PORT || 3001;
 
 app.use(express.json());
