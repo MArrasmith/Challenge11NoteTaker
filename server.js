@@ -2,7 +2,7 @@ const express = require("express");
 const path = require('path');
 const fs = require('fs');
 const app = express();
-const noteHistory = require('./db/db.json')
+const dbItem = require('./db/db.json')
 const { v4: uuidv4 } = require('uuid')
 const PORT = process.env.PORT || 3001;
 
@@ -13,10 +13,7 @@ app.use(express.static('public'));
 app.get('/notes', (req, res) => {
     res.sendFile(path.join(__dirname, 'public', 'notes.html'))
 });
-// `GET *` should return the `index.html` file.
-app.get('*', (req, res) => {
-    res.sendFile(path.join(__dirname, 'public', 'index.html'))
-});
+
 // `GET /api/notes` should read the `db.json` file and return all saved notes as JSON.
 app.get('/api/notes', (req, res) => {
     fs.readFile('./db/db.json', (err, data) => {
@@ -30,12 +27,15 @@ app.post('/api/notes', (req, res) => {
     const newNote = req.body
 // You'll need to find a way to give each note a unique id
     newNote.id = uuidv4()
-    noteHistory.push(newNote)
+    dbItem.push(newNote)
 // On the back end, the application should include a `db.json` file that will be used to store and retrieve notes using the `fs` module.
-    fs.writeFileSync('./db/db.json', JSON.stringify(noteHistory))
-    res.json(noteHistory)
+    fs.writeFileSync('./db/db.json', JSON.stringify(dbItem))
+    res.json(dbItem)
 });
-
+// `GET *` should return the `index.html` file.
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, 'public', 'index.html'))
+});
 app.listen(PORT, () =>
   console.log(`App listening at http://localhost:${PORT}`)
 );
